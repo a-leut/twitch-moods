@@ -21,8 +21,8 @@ class TwitchClient(object):
         Multiple channels
         Refactor to asyncio
     """
-    def __init__(self, channel=None):
-        self.channel = channel
+    def __init__(self, channels=[]):
+        self.channels = channels
         self._con = None
         self._data = ""
 
@@ -30,7 +30,8 @@ class TwitchClient(object):
         self._connect_socket()
         self._con.send(bytes('PASS %s\r\n' % PASS, 'UTF-8'))
         self._con.send(bytes('NICK %s\r\n' % NICK, 'UTF-8'))
-        self._con.send(bytes('JOIN %s\r\n' % self.channel, 'UTF-8'))
+        for chan in self.channels:
+            self._con.send(bytes('JOIN %s\r\n' % chan, 'UTF-8'))
 
     def get_message(self):
         self._data = self._data+self._con.recv(1024).decode('UTF-8')

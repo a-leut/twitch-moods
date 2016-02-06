@@ -1,13 +1,21 @@
-import redis
 import socket
 from collections import Counter
+from emoj import emojis
 from twitch_client import TwitchClient, SocketException
 
+channels = ['#voyboy', '#stonedyooda', '#c9sneaky', '#trick2g']
+
 def update_smiley_count(user, message, counter):
-    pass
+    # todo: parse emoji
+    for token in message.split():
+        updated = []
+        if token in emojis:
+            counter[token] += 1
+            if token not in updated:
+                updated.append(token)
 
 def main():
-    twitch = TwitchClient(channel="#arteezy")
+    twitch = TwitchClient(channels)
 
     while True:
         try:
@@ -19,7 +27,6 @@ def main():
                 if response:
                     user, message = response
                     update_smiley_count(user, message, emoji_count)
-                    print(user, message)
         except (socket.error, socket.timeout):
             pass
             # todo: increase delay between reconnects
