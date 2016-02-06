@@ -24,14 +24,7 @@ class TwitchClient(object):
     def __init__(self, channel=None):
         self.channel = channel
         self._con = None
-        self.obs = []
-
-    def add_observer(self, observer):
-        if observer not in self.obs:
-            self.obs.append(observer)
-
-    def remove_observer(self, observer):
-        self.obs.remove(observer)
+        self._data = ""
 
     def login(self):
         self._connect_socket()
@@ -39,37 +32,24 @@ class TwitchClient(object):
         self._con.send(bytes('NICK %s\r\n' % NICK, 'UTF-8'))
         self._con.send(bytes('JOIN %s\r\n' % self.channel, 'UTF-8'))
 
-    def _notify_observers(self, *args, **kwargs):
-        for observer in self.obs:
-            observer(*args, **kwargs)
+    def get_message(self):
+        self._data = self._data+self._con.recv(1024).decode('UTF-8')
+        data_split = re.split(r"[~\r\n]+", self._data)
+        self._data = data_split.pop()
 
-    def read_messages(self):
-        data = ""
-        while True:
-            try:
-                data = data+self._con.recv(1024).decode('UTF-8')
-                data_split = re.split(r"[~\r\n]+", data)
-                data = data_split.pop()
+        for line in data_split:
+            line = str.rstrip(line)
+            line = str.split(line)
 
-                for line in data_split:
-                    line = str.rstrip(line)
-                    line = str.split(line)
+            if len(line) >= 1:
+                if line[0] == 'PING':
+                    self._send_pong(line[1])
+                    return self.get_message()
 
-                    if len(line) >= 1:
-                        if line[0] == 'PING':
-                            self.send_pong(line[1])
-
-                        if line[1] == 'PRIVMSG':
-                            sender = self._get_sender(line[0])
-                            message = self._get_message(line)
-                            self._notify_observers(sender, message)
-
-            except socket.error:
-                # todo: log?
-                raise SocketException("Socket died")
-
-            except socket.timeout:
-                raise SocketException("Socket timout")
+                if line[1] == 'PRIVMSG':
+                    sender = self._get_sender(line[0])
+                    message = self._get_message(line)
+                    return sender, message
 
     def _connect_socket(self):
         con = socket.socket()
