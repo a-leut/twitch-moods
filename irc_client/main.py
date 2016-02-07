@@ -1,7 +1,8 @@
 import socket
-from logger import get_logger
-from emoji_counter import EmojiCounter
-from twitch_irc_client import TwitchClient, SocketException
+
+from irc_client.logger import get_logger
+from irc_client.emoji_counter import EmojiCounter
+from irc_client.client import TwitchClient
 
 channels = ['#moonducktv']
 
@@ -21,7 +22,7 @@ def main():
             pass
         except Exception as e:
             print('Fatal Exception')
-            logger = get_logger()
+            logger = get_logger(__name__)
             logger.error('Fatal Exception: %s' % str(e))
             raise
 

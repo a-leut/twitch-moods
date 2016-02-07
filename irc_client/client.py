@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 
+import os
 import re
 import socket
 
-NICK = "deep_fart"
-PASS = "oauth:05m35xbppp0zgt71nymghqgmaput8x"
+NICK = os.environ('twitch_nick')
+PASS = os.environ('twitch_key')
 HOST = "irc.twitch.tv"
 PORT = 6667
-
-class SocketException(Exception):
-    def __init__(self, *args, **kwargs):
-        Exception.__init__(self, *args, **kwargs)
 
 class TwitchClient(object):
     """ Client for reading messages from twitch.tv chat. Connects to the chat
@@ -18,7 +15,6 @@ class TwitchClient(object):
         when messages are posted to the channel(s).
 
         TODO:
-        Multiple channels
         Refactor to asyncio
     """
     def __init__(self, channels=[]):
@@ -34,7 +30,8 @@ class TwitchClient(object):
             self._con.send(bytes('JOIN %s\r\n' % chan, 'UTF-8'))
 
     def get_message(self):
-        self._data = self._data+self._con.recv(1024).decode('UTF-8')
+        new_data = self._con.recv(1024).decode('utf-8', 'ignore')
+        self._data = self._data + new_data
         data_split = re.split(r"[~\r\n]+", self._data)
         self._data = data_split.pop()
 
