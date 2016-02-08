@@ -4,7 +4,7 @@ from irc_client.logger import get_logger
 from irc_client.emoji_counter import EmojiCounter
 from irc_client.client import TwitchClient
 
-channels = ['#moonducktv']
+channels = ['#arteezy']
 
 def main():
     twitch = TwitchClient(channels)

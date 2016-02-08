@@ -4,8 +4,8 @@ import os
 import re
 import socket
 
-NICK = os.environ('twitch_nick')
-PASS = os.environ('twitch_key')
+NICK = os.environ.get('twitch_nick')
+PASS = os.environ.get('twitch_key')
 HOST = "irc.twitch.tv"
 PORT = 6667
 

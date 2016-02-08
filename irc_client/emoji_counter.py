@@ -7,7 +7,7 @@ from emoj import emojis
 
 class EmojiCounter(object):
     def __init__(self):
-        self._r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        self._redis = redis.StrictRedis(host='localhost', port=6379, db=0)
         self._reset_redis_count()
         self.counter = Counter()
 
@@ -22,10 +22,10 @@ class EmojiCounter(object):
 
     def _reset_redis_count(self):
         for emoji in emojis:
-            self._r.set(emoji, 0)
+            self._redis.set(emoji, 0)
 
     def _update_redis(self, updated):
         for emoji in updated:
-            self._r.set(emoji, self.counter[emoji])
+            self._redis.set(emoji, self.counter[emoji])
 
 
