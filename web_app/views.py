@@ -12,5 +12,4 @@ def get_emoji_counts():
 
 @views.route('/')
 def index():
-    print(current_app.root_path)
     return render_template('index.html')
