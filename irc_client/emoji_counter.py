@@ -1,13 +1,12 @@
 """ Counts emojis and stores the result in redis through the lifetime of the
     object.
 """
-import redis
 from collections import Counter
 from emoj import emojis
 
 class EmojiCounter(object):
-    def __init__(self):
-        self._redis = redis.StrictRedis(host='localhost', port=6379, db=0)
+    def __init__(self, redis_connection):
+        self._redis = redis_connection
         self._reset_redis_count()
         self.counter = Counter()
 
@@ -27,5 +26,3 @@ class EmojiCounter(object):
     def _update_redis(self, updated):
         for emoji in updated:
             self._redis.set(emoji, self.counter[emoji])
-
-

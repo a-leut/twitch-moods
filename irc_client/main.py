@@ -1,17 +1,22 @@
+""" Connect to twitch.tv chat channels, count emojis, and store the results in
+    redis.
+"""
 import socket
-
-from irc_client.logger import get_logger
+import redis
+from irc_client.logger import make_logger
 from irc_client.emoji_counter import EmojiCounter
 from irc_client.client import TwitchClient
 
-channels = ['#arteezy']
+REDIS_CLIENT = redis.StrictRedis(host='localhost', port=6379, db=0)
+CHANNELS = ['#arteezy']
+LOGGER = make_logger(__name__)
 
 def main():
-    twitch = TwitchClient(channels)
+    twitch = TwitchClient(CHANNELS)
     while True:
         try:
             twitch.login()
-            counter = EmojiCounter()
+            counter = EmojiCounter(REDIS_CLIENT)
             while True:
                 response = twitch.get_message()
                 if response:
@@ -22,8 +27,7 @@ def main():
             pass
         except Exception as e:
             print('Fatal Exception')
-            logger = get_logger(__name__)
-            logger.error('Fatal Exception: %s' % str(e))
+            LOGGER.error('Fatal Exception: %s' % str(e))
             raise
 
 if __name__ == '__main__':
