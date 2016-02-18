@@ -3,22 +3,22 @@
 """
 import socket
 import redis
-from irc_client.logger import make_logger
-from irc_client.emoji_counter import EmojiCounter
-from irc_client.client import TwitchClient
+from chat_client import TwitchChat
+from chat_client.logger import make_logger
+from chat_client.emoji_counter import EmojiCounter
 
 REDIS_CLIENT = redis.StrictRedis(host='localhost', port=6379, db=0)
-CHANNELS = ['#arteezy']
+CHANNELS = ['#moonducktv']
 LOGGER = make_logger(__name__)
 
 def main():
-    twitch = TwitchClient(CHANNELS)
+    twitch_chat = TwitchChat(CHANNELS)
     while True:
         try:
-            twitch.login()
+            twitch_chat.login()
             counter = EmojiCounter(REDIS_CLIENT)
             while True:
-                response = twitch.get_message()
+                response = twitch_chat.get_message()
                 if response:
                     user, message = response
                     print(user, message)
