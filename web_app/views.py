@@ -1,15 +1,22 @@
 from flask import render_template, current_app, Blueprint, jsonify
-from emoj import emojis
+from twitch_api_service import get_emoticon_urls
 
-views = Blueprint('views', __name__, url_prefix='')
+api = Blueprint('api', __name__, url_prefix='/api/v1')
+pages = Blueprint('pages', __name__, url_prefix='')
 
-@views.route('/counts/', methods=['GET'])
+EMOJIS = get_emoticon_urls()
+
+@api.route('/emoji_counts/', methods=['GET'])
 def get_emoji_counts():
-    counts = {}
-    for emoji in emojis:
-        counts[emoji] = int(current_app.redis.get(emoji))
-    return jsonify(counts)
+    results = {}
+    for key in EMOJIS.keys():
+        count = int(current_app.redis.hget("count", key))
+        if count > 0:
+            results[key] = {}
+            results[key]["count"] = int(count)
+            results[key]["url"] = str(current_app.redis.hget("url", key))
+    return jsonify(results)
 
-@views.route('/')
+@pages.route('/')
 def index():
     return render_template('index.html')

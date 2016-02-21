@@ -21,6 +21,7 @@ class TwitchChat(object):
         self._data = ""
 
     def login(self):
+        print("Joining chat channels...")
         self._connect_socket()
         self._con.send(bytes('PASS %s\r\n' % PASS, 'UTF-8'))
         self._con.send(bytes('NICK %s\r\n' % NICK, 'UTF-8'))

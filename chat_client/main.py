@@ -6,13 +6,14 @@ import redis
 from chat_client import TwitchChat
 from chat_client.logger import make_logger
 from chat_client.emoji_counter import EmojiCounter
+from twitch_api_service import get_top_channel_names
 
 REDIS_CLIENT = redis.StrictRedis(host='localhost', port=6379, db=0)
-CHANNELS = ['#moonducktv']
 LOGGER = make_logger(__name__)
 
 def main():
-    twitch_chat = TwitchChat(CHANNELS)
+    top_channels = ['#' + name for name in get_top_channel_names(1000)]
+    twitch_chat = TwitchChat(top_channels)
     while True:
         try:
             twitch_chat.login()

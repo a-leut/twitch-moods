@@ -1,6 +1,6 @@
 import requests
 
-# TODO: cache results (longer timeout for emoticons)
+# TODO: cache api results in redis (longer timeout for emoticons)
 
 def _get_channels_json():
     r = requests.get('https://api.twitch.tv/kraken/streams')
@@ -14,7 +14,7 @@ def get_top_channel_names(limit=100):
     channels_json = _get_channels_json()
     return [c['channel']['name'] for c in channels_json[:limit]]
 
-def get_emoticons_list():
+def get_emoticon_urls():
     emoticons_json = _get_emoticons_json()
     emoticons = {}
     for e in emoticons_json['emoticons']:
