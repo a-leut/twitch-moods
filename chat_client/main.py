@@ -12,14 +12,14 @@ REDIS_CLIENT = redis.StrictRedis(host='localhost', port=6379, db=0)
 LOGGER = make_logger(__name__)
 
 def main():
-    top_channels = ['#' + name for name in get_top_channel_names(1000)]
-    twitch_chat = TwitchChat(top_channels)
+    top_channels = ['#' + name for name in get_top_channel_names(100)]
+    twitch = TwitchChat(top_channels)
     while True:
         try:
-            twitch_chat.login()
+            twitch.login()
             counter = EmojiCounter(REDIS_CLIENT)
             while True:
-                response = twitch_chat.get_message()
+                response = twitch.get_message()
                 if response:
                     user, message = response
                     print(user, message)

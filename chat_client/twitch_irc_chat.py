@@ -13,7 +13,7 @@ class TwitchChat(object):
         when messages are posted to the channel(s).
 
         TODO:
-        Refactor to asyncio
+        Refactor to asyncio ?
     """
     def __init__(self, channels=[]):
         self.channels = channels

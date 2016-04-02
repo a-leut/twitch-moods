@@ -2,7 +2,7 @@ function update_view(data){
     $("#emojis").empty();
     console.log(data.length);
     $.each(data, function(index, value) {
-            $("#emojis").append("<li>" + value["url"] + ": " + value["count"] + "</li>");
+            $("#emojis").append("<li>" + index + ": " + value + "</li>");
     });
 }
 
@@ -14,5 +14,5 @@ function update_view(data){
         update_view(data);
         poll();
       }, dataType: "json"});
-  }, 1000);
+  }, 10);
 })();
