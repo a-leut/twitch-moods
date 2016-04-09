@@ -1,4 +1,4 @@
-from flask import render_template, current_app, Blueprint, jsonify
+from flask import render_template, g, current_app, Blueprint, jsonify
 from twitch_api_service import get_emoticon_urls
 from .tasks import update_counts_from_redis
 
@@ -11,14 +11,10 @@ def get_results():
     counts = current_app.redis.mget(EMOJIS)
     counts = map(int, [c if c else 0 for c in counts])
     results = dict(zip(EMOJIS, counts))
-    print(results)
     return jsonify(results)
-
-# results = get_results()
 
 @api.route('/emoji_counts/', methods=['GET'])
 def get_emoji_counts():
-    update_counts_from_redis.delay()
     return get_results()
 
 @pages.route('/')

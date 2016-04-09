@@ -2,7 +2,9 @@ function update_view(data){
     $("#emojis").empty();
     console.log(data.length);
     $.each(data, function(index, value) {
+        if (value > 0) {
             $("#emojis").append("<li>" + index + ": " + value + "</li>");
+        }
     });
 }
 
