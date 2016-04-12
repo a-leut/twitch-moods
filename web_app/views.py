@@ -6,13 +6,14 @@ api = Blueprint('api', __name__, url_prefix='/api/v1')
 pages = Blueprint('pages', __name__, url_prefix='')
 
 EMOJIS = get_emoticon_urls()
+urls = list(EMOJIS.values())
 
 def get_results():
+    results = {}
     counts = current_app.redis.mget(EMOJIS.keys())
-    counts = map(int, [c if c else 0 for c in counts])
-    urls = map(str, EMOJIS.values())
-    results = dict(zip(urls, counts))
-    print(results)
+    for i, count in enumerate(counts):
+        if count and int(count) > 0:
+            results[urls[i]] = int(count)
     return jsonify(results)
 
 @api.route('/emoji_counts/', methods=['GET'])

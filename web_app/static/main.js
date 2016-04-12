@@ -2,7 +2,6 @@ function update_view(data){
     $("#emojis").empty();
     // console.log(data.length);
     var pjs = Processing.getInstanceById("mycanvas");
-    console.log(pjs);
     $.each(data, function(index, value) {
         if (value > 0) {
             pjs.updateBoid(index, value);
