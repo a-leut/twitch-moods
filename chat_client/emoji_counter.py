@@ -2,12 +2,12 @@
     object.
 """
 from collections import Counter
-from twitch_api_service import get_emoticon_urls
+from twitch_api_service import get_emoji_names_urls
 
 class EmojiCounter(object):
     def __init__(self, redis_connection):
         self.counter = Counter()
-        self._emojis = get_emoticon_urls().keys()
+        self._emojis, _ = get_emoji_names_urls()
         self._redis = redis_connection
         self._reset_redis()
 

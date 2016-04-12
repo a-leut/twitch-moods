@@ -21,13 +21,11 @@ class TwitchChat(object):
         self._data = ""
 
     def login(self):
-        print("Joining chat channels...")
         self._connect_socket()
         self._con.send(bytes('PASS %s\r\n' % PASS, 'UTF-8'))
         self._con.send(bytes('NICK %s\r\n' % NICK, 'UTF-8'))
         for chan in self.channels:
             self._con.send(bytes('JOIN %s\r\n' % chan, 'UTF-8'))
-        print("Success: joined channels")
 
     def get_message(self):
         new_data = self._con.recv(1024).decode('utf-8', 'ignore')

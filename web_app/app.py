@@ -21,7 +21,4 @@ def create_app(app_name='web_app'):
     app.celery = celery
     app.redis = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-    # Results cache
-    app.results = []
-
     return app
