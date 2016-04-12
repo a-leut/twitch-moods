@@ -1,4 +1,4 @@
-final float scale = 10.0; 
+final float scale = 2.0; 
 
 class BoidKappa {
   PVector pos;
