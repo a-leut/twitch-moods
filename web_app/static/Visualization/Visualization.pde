@@ -29,6 +29,12 @@ void draw() {
   }
 }
 
-void update_boid() {
-  
+void updateBoid(String url, int count) {
+  if (boids.containsKey(url)) {
+    BoidKappa b = boids.get(url);
+    b.updateCount(count);
+  }
+  else {
+    boids.put(url, new BoidKappa(url, count));
+  }
 }

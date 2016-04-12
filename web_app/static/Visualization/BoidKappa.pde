@@ -5,12 +5,12 @@ class BoidKappa {
   PVector dir;
   PImage img;
   String url;
-  int emojiCount;
+  int count;
   float size;
   
   BoidKappa(String url, int count) {
     img = loadImage(url, "png");
-    emojiCount = count;
+    this.count = count;
     this.url = url;
     size = count * scale;
     // make it move
@@ -38,6 +38,13 @@ class BoidKappa {
     }
     // add updated direction vector to position
     pos.add(dir);
+  }
+  
+  void updateCount(int count) {
+    if (this.count != count) {
+      this.count = count;
+      this.size = count * scale;
+    }
   }
   
   void drawSelf() {
