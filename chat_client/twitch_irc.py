@@ -9,8 +9,8 @@ PORT = 6667
 
 class TwitchChat(object):
     """ Client for reading messages from twitch.tv chat. Connects to the chat
-        server, joins some number of channels, and updates observer functions
-        when messages are posted to the channel(s).
+        server, joins some number of channels, and returns the next message
+        from all the channels each time get_message is called.
 
         TODO:
         Refactor to asyncio ?

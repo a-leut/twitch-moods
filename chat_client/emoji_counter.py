@@ -1,10 +1,10 @@
-""" Counts emojis and stores the result in redis through the lifetime of the
-    object.
-"""
 from collections import Counter
 from twitch_api_service import get_emoji_names_urls
 
 class EmojiCounter(object):
+    """ Counts emojis and stores the result in redis through the lifetime of
+    the object.
+    """
     def __init__(self, redis_connection):
         self.counter = Counter()
         self._emojis, _ = get_emoji_names_urls()
