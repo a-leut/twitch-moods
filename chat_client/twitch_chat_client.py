@@ -21,8 +21,7 @@ class ChatClient(object):
                 # log in to twitch and reset emoji counts
                 print("Joining chat channels...")
                 self._twitch.login()
-                print("Success...")
-                print("Reading messages...")
+                print("Success, reading messages...")
                 counter = EmojiCounter(self._redis)
                 # read twitch messages forever and update the counts
                 while True:
