@@ -1,6 +1,4 @@
 class FlockManager {
-  static final float boidScreenArea = 20;
-  
   public HashMap<String, BoidKappa> boids;
   
   public FlockManager() {
@@ -17,16 +15,15 @@ class FlockManager {
       b.count = count;
     }
     else {
-      boids.put(url, new BoidKappa(url, count)); 
+      boids.put(url, new BoidKappa(url, count, getTotalCount())); 
     }
   }
   
   void manageBoids() {
     // calculate the adjustment scalar needed to make the total boid area fit screen
-    int total = getTotalCount();   
-    float adjust = boidScreenArea / PI;
+    int totalCount = getTotalCount();
     for (BoidKappa boid : boids.values()) {
-      boid.setSize(total, adjust);
+      boid.setSize(totalCount);
       boid.move();
     }
   }
