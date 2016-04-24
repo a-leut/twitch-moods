@@ -1,6 +1,4 @@
 final float scale = 2.0; 
-static HashMap<String, BoidKappa> boids = new HashMap<String, BoidKappa>();
-
 class BoidKappa {
   
   public PVector pos;
@@ -11,42 +9,24 @@ class BoidKappa {
   private String url;
   
   public BoidKappa(String url, int count) {
-    img = loadImage(url, "png");
+    // init basic values
+    img = loadImage(url, "png"); // TODO: refactor to use preloaded image hash?
     this.count = count;
     this.url = url;
-    // make it move
+    // give it directional info
     pos = new PVector(random(0, width-size), random(0, height-size));
     float randSpeed = random(1.0, 3.0);
     dir = new PVector(random(-randSpeed, randSpeed), random(-randSpeed, randSpeed));
-  }
-  
-  public void update() {
-    float totalSize = getTotalSize();
-    for (BoidKappa boid : boids.values()) {
-      boid.setSize();
-      boid.move();
-    }
-    for (BoidKappa boid : boids.values()) {
-      boid.drawSelf();
-    }
-  }
-  
-  private float getTotalSize() {
-    float total = 0;
-    for (BoidKappa boid : boids.values()) {
-      total += boid.count;
-    }
-    return total;
   }
   
   public void drawSelf() {
     image(img, pos.x, pos.y, size, size);
   }
   
-  private void setSize() {
-    float newSize = scale * count;
-    this.size = newSize;
-  }
+  private void setSize(int totalCount, float adjust) {
+    this.size = ((float)count/(float)totalCount) / adjust;
+    println(this.size);
+}
   
   private void move() {
     // reverse direction vector if boid will pass wall
