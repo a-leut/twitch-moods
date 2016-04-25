@@ -7,7 +7,7 @@ PASS = os.environ.get('twitch_key')
 HOST = "irc.twitch.tv"
 PORT = 6667
 
-class TwitchChat(object):
+class TwitchIRC(object):
     """ Client for reading messages from twitch.tv chat. Connects to the chat
         server, joins some number of channels, and returns the next message
         from all the channels each time get_message is called.
@@ -28,6 +28,9 @@ class TwitchChat(object):
             self._con.send(bytes('JOIN %s\r\n' % chan, 'UTF-8'))
 
     def get_message(self):
+        """ Reads in new chat messages and returns the next message sent in
+            chat and its sender.
+        """
         new_data = self._con.recv(1024).decode('utf-8', 'ignore')
         self._data = self._data + new_data
         data_split = re.split(r"[~\r\n]+", self._data)

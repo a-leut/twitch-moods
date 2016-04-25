@@ -1,7 +1,7 @@
 import time
 import socket
 import redis
-from chat_client import TwitchChat, EmojiCounter, make_logger
+from chat_client import TwitchIRC, EmojiCounter, make_logger
 
 class ChatClient(object):
     """ Reads twitch chat messages from given channel and updates counts of
@@ -9,7 +9,7 @@ class ChatClient(object):
         twitch if it loses connection
     """
     def __init__(self, channels, verbose=False):
-        self._twitch = TwitchChat(channels)
+        self._twitch = TwitchIRC(channels)
         self._redis = redis.StrictRedis(host='localhost', port=6379, db=0)
         self._verbose = verbose
 
