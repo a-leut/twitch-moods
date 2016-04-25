@@ -1,4 +1,4 @@
-class FlockManager {
+public class FlockManager {
   public HashMap<String, BoidKappa> boids;
   
   public FlockManager() {
@@ -20,11 +20,10 @@ class FlockManager {
   }
   
   void manageBoids() {
-    // calculate the adjustment scalar needed to make the total boid area fit screen
     int totalCount = getTotalCount();
     for (BoidKappa boid : boids.values()) {
       boid.setSize(totalCount);
-      boid.move();
+      boid.move(boids);
     }
   }
   
