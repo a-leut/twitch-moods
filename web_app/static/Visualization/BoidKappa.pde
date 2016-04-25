@@ -30,7 +30,6 @@ public class BoidKappa {
   private PImage loadMaskImage(String url) {
     PImage res = loadImage(url, "png");
     color c = res.get(0, 0);
-    println("alpha", alpha(c));
     // if image is not transparent already
     if (alpha(c) != 0.0) {
       res = maskImage(res, c);
