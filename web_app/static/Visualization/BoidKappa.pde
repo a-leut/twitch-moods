@@ -13,7 +13,8 @@ public class BoidKappa {
 
   public BoidKappa(String url, int count, int totalCount) {
     // init basic values
-    img = loadMaskImage(url);// TODO: refactor to use preloaded image hash?
+    PImage loaded = loadImage(url, "png");
+    img = ImageMask.maskOpaqueImage(loaded);
     this.count = count;
     this.url = url;
     // give it directional info
@@ -25,49 +26,6 @@ public class BoidKappa {
 
   public void drawSelf() {
     image(img, pos.x, pos.y, size, size);
-  }
-
-  private PImage loadMaskImage(String url) {
-    PImage res = loadImage(url, "png");
-    color c = res.get(0, 0);
-    // if image is not transparent already
-    if (alpha(c) != 0.0) {
-      res = maskImage(res, c);
-    }
-    return res;
-  }
-  
-  private PImage maskImage(PImage img, color c) {
-    // work from outside in on all sides of image to set sequential 
-    // pixels of color c to have alpha value of 0
-    color trans_c = c & 0x00FFFFFF;
-    img.loadPixels();
-    img.format = ALPHA;
-    for (int x=0; x<img.width; x++) {
-      // look from top down
-      for (int y=0; y<img.height; y++) {
-        // check if pixel matches border color
-        if (img.pixels[y*img.width + x] == c) {
-          img.pixels[y*img.width + x] = trans_c;
-        }
-        // if not border stop looking since sequence is over
-        else {
-          break;
-        }
-      }
-      // bottom up
-      for (int y=img.height-1; y>=0; y--) {
-        if (img.pixels[y*img.width + x] == c) {
-          img.pixels[y*img.width + x] = trans_c;
-        }
-        else {
-          break;
-        }
-      }
-
-      img.updatePixels();
-    }
-    return img;
   }
 
   private void setSize(int totalCount) {
