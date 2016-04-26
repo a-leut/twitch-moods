@@ -8,16 +8,16 @@ public class BoidKappa {
   public PVector dir;
   public int count;
   public float size;
-  private PImage img; // refactor to image hash
+  private PImage img;
   private String url;
 
   public BoidKappa(String url, int count, int totalCount) {
-    // init basic values
+    // Init basic values
     PImage loaded = loadImage(url, "png");
     img = ImageMask.maskOpaqueImage(loaded);
     this.count = count;
     this.url = url;
-    // give it directional info
+    // Give it directional info
     setSize(totalCount);
     pos = new PVector(random(size/2+1, width-size/2-1), random(size/2+1, height-size/2-1));
     float randSpeed = random(1.0, 3.0);
@@ -33,8 +33,8 @@ public class BoidKappa {
   }
 
   private void move(HashMap<String, BoidKappa> neighbors) {
-    // steer boid through three steps    
-    // reverse direction vector if boid will pass wall
+    // TODO: Flocking
+    // Reverse direction vector if boid will pass wall
     PVector future = new PVector(pos.x, pos.y);
     future.add(dir);
     if (future.x - size/2 < 0 || future.x + size/2 > width) {
@@ -43,8 +43,7 @@ public class BoidKappa {
     if (future.y - size/2 < 0 || future.y + size/2 > height) {
       dir.y *= -1.0;
     }
-
-    // add updated direction vector to position
+    // Add updated direction vector to position
     pos.add(dir);
   }
 }

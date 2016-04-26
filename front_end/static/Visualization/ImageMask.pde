@@ -17,7 +17,7 @@ static class ImageMask {
     // If not we've found the border and return false
     return false;
   }
-  
+
   private static PImage maskImage(PImage img, color c) {
     // Work from outside in on all sides of image to set sequential 
     // pixels of color c to have alpha value of 0
