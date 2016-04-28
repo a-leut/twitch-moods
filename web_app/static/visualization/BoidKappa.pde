@@ -1,6 +1,6 @@
 
 public class BoidKappa {  
-  private static final float boidScale = 2000;
+  private static final float boidScale = 1000;
   private static final float seperationFactor = 1;
   private static final float alignFactor = 1;
   private static final float cohesionFactor = 1;

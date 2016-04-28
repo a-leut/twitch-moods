@@ -1,3 +1,4 @@
+import time
 from collections import Counter
 from twitch_api_service import get_emoji_names_urls
 
@@ -6,24 +7,39 @@ class EmojiCounter(object):
     the object.
     """
     def __init__(self, redis_connection):
-        self.counter = Counter()
-        self._emojis, _ = get_emoji_names_urls()
+        self.emojis, _ = get_emoji_names_urls()
         self._redis = redis_connection
         self._reset_redis()
 
     def update_emoji_count(self, message):
-        for token in message.split():
-            updated_emoji_keys = []
-            if token in self._emojis:
-                self.counter[token] += 1
-                if token not in updated_emoji_keys:
-                    updated_emoji_keys.append(token)
-            self._update_redis(updated_emoji_keys)
+        tokens = message.split()
+        emoji_counts = Counter([t for t in tokens if t in self.emojis])
+        ts = time.time()
+        for emoji, count in emoji_counts.iteritems():
+            self._add_key(ts, emoji, count)
+        # update redis from counts
+        for emoji in self.emojis:
+            self._delete_old_keys(emoji, ts)
+            self._update_count(emoji, ts)
+
+    def _update_count(self, emoji, ts):
+        count = self._redis.zcount('s_' + emoji, 0, ts)
+        self._redis.set(emoji, count)
+
+    def _delete_old_keys(self, emoji, ts, expire=60):
+        self._redis.zremrangebyscore('s_' + emoji, 0, ts - expire)
 
     def _reset_redis(self):
-        for key in self._emojis:
-            self._redis.set(key, 0)
+        for emoji in self.emojis:
+            self._redis.set(emoji, 0)
 
-    def _update_redis(self, updated_emoji_keys):
-        for key in updated_emoji_keys:
-            self._redis.set(key, self.counter[key])
+    def _add_key(self, time, emoji, count):
+        """ Adds 'count' keys to the sorted set corresponding with 'emoji.'
+            Unique names are given to the keys when 'count' > 1
+        """
+        if count == 1:
+            self._redis.zadd('s_' + emoji, 'emoji', time)
+        elif count > 1:
+            # TODO: refactor to single call
+            for n in count:
+                self._redis.zadd('s_' + emoji, 'emoji' + n, time)
