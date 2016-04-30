@@ -9,7 +9,8 @@ class EmojiCounter(object):
         Timestamps of emojis are stored in sorted sets named "s_[emoji]" and
         counts of these timestamps are stored in keys named "[emoji]."
     """
-    BUFFER_LIMIT = 20
+    BUFFER_LIMIT = 15
+    EXPIRE = 20
 
     def __init__(self, redis_connection, verbose=False):
         self.emojis, _ = get_emoji_names_urls()
@@ -57,8 +58,8 @@ class EmojiCounter(object):
             print('Set %s to %s' % (emoji, count))
         return count
 
-    def _delete_old_timestamps(self, emoji, ts, expire=60):
-        self._redis.zremrangebyscore('s_' + emoji, 0, ts - expire)
+    def _delete_old_timestamps(self, emoji, ts):
+        self._redis.zremrangebyscore('s_' + emoji, 0, ts - EmojiCounter.EXPIRE)
 
     def _reset_redis(self):
         for emoji in self.emojis:
