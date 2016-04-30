@@ -18,21 +18,22 @@ class ChatClient(object):
         delay = 1
         while True:
             try:
-                # log in to twitch and reset emoji counts
+                # Log in to twitch and reset emoji counts
                 print("Joining chat channels...")
                 self._twitch.login()
-                print("Success, reading messages...")
-                counter = EmojiCounter(self._redis)
-                # read twitch messages forever and update the counts
+                print("Setting up redis counter...")
+                counter = EmojiCounter(self._redis, verbose=self._verbose)
+                print("Reading messages...")
+                # Read twitch messages forever and update the counts
                 while True:
                     response = self._twitch.get_message()
                     if response:
                         user, message = response
                         counter.update_emoji_count(message)
                         if self._verbose:
-                            print(user, message)
+                            print('[Message] - %s: %s' % (user, message))
             except (socket.error, socket.timeout):
-                # if lose connection to twitch try to restablish with delay
+                # If lose connection to twitch try to restablish with delay
                 cur_time = time.time()
                 print('Timeout: lost connection')
                 if cur_time - last_time < 10:
