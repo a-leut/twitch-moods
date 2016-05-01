@@ -9,7 +9,7 @@ class EmojiCounter(object):
         Timestamps of emojis are stored in sorted sets named "s_[emoji]" and
         counts of these timestamps are stored in keys named "[emoji]."
     """
-    BUFFER_LIMIT = 30
+    BUFFER_LIMIT = 100
     EXPIRE = 5
 
     def __init__(self, redis_connection, verbose=False):

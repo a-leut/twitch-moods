@@ -16,6 +16,9 @@ public class FlockManager {
         toRemove.add(url);
       }
     }
+    for (String url : toRemove) {
+      boids.remove(url);
+    }
   }
   
   void updateBoid(String url, int count) {
