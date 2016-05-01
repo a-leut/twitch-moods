@@ -12,7 +12,7 @@ def get_results(cutoff=None):
     counts = current_app.redis.mget(names)
     results = {}
     if cutoff:
-        # return results in the top percentile cutoff
+        # Return results in the top percentile cutoff
         n_counts = np.array([int(c) for c in counts])
         n_counts = n_counts[np.nonzero(n_counts)]
         percentile = np.percentile(n_counts, cutoff)
