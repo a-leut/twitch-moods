@@ -27,7 +27,7 @@ class EmojiCounter(object):
         """
         self._messages.append(message)
         if len(self._messages) > EmojiCounter.BUFFER_LIMIT:
-            print('%s - proc' % time.time())
+            # print('%s - proc' % time.time())
             self.process_messages()
             self._messages = []
 
@@ -49,7 +49,8 @@ class EmojiCounter(object):
             for emoji in self._known_emojis:
                 self._delete_old_timestamps(emoji, ts)
                 count = self._update_count_key(emoji, ts)
-                to_remove.add(emoji)
+                if count == 0:
+                    to_remove.add(emoji)
             self._known_emojis.difference_update(to_remove)
 
     def _update_count_key(self, emoji, ts):

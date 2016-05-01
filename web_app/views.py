@@ -21,7 +21,7 @@ def get_results(cutoff=None):
                 results[urls[i]] = int(count)
     else:
         for i, count in enumerate(counts):
-            if count and int(count) > 1:
+            if count and int(count):
                 results[urls[i]] = int(count)
     return jsonify(results)
 
