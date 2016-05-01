@@ -4,12 +4,14 @@ public class BoidKappa {
   private static final float seperationFactor = 1;
   private static final float alignFactor = 1;
   private static final float cohesionFactor = 1;
+  private static final float r = 2;
   public PVector pos;
   public PVector dir;
   public int count;
   public float size;
   private PImage img;
   private String url;
+  private Boolean steppedOut = false;
 
   public BoidKappa(String url, int count, int totalCount) {
     // Init basic values
@@ -34,28 +36,16 @@ public class BoidKappa {
 
   private void move(HashMap<String, BoidKappa> neighbors) {
     // TODO: Flocking
-        // Move back if past wall
-    if (pos.x > width) {
-      pos.x = width;
-    } else if (pos.x < 0) {
-      pos.x = 0;
-    }
-    if (pos.y > height) {
-      pos.y = height;
-    } else if (pos.y < 0) {
-      pos.y = 0;
-    }
-    // Reverse direction vector if boid will pass wall
-    PVector future = new PVector(pos.x, pos.y);
-    future.add(dir);
-    if (future.x - size/2 < 0 || future.x + size/2 > width) {
-      dir.x *= -1.0;
-    }
-    if (future.y - size/2 < 0 || future.y + size/2 > height) {
-      dir.y *= -1.0;
-    }
+    dir.x += random(-0.05, 0.05);
+    dir.y += random(-0.05, 0.05);
 
-    // Add updated direction vector to position
     pos.add(dir);
+    borders();
+  }
+  private void borders() {
+    if (pos.x < -r) pos.x = width+r;
+    if (pos.y < -r) pos.y = height+r;
+    if (pos.x > width+r) pos.x = -r;
+    if (pos.y > height+r) pos.y = -r;
   }
 }
