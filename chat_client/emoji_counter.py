@@ -9,8 +9,8 @@ class EmojiCounter(object):
         Timestamps of emojis are stored in sorted sets named "s_[emoji]" and
         counts of these timestamps are stored in keys named "[emoji]."
     """
-    BUFFER_LIMIT = 15
-    EXPIRE = 20
+    BUFFER_LIMIT = 30
+    EXPIRE = 5
 
     def __init__(self, redis_connection, verbose=False):
         self.emojis, _ = get_emoji_names_urls()
@@ -27,6 +27,7 @@ class EmojiCounter(object):
         """
         self._messages.append(message)
         if len(self._messages) > EmojiCounter.BUFFER_LIMIT:
+            print('Processing')
             self.process_messages()
             self._messages = []
 
@@ -78,5 +79,5 @@ class EmojiCounter(object):
                 unique_time = time + (0.0000001 * n)
                 self._redis.zadd('s_' + emoji, unique_time, unique_time)
         if self._verbose:
-            print('Added %s to s_%s %s times' %(time, emoji, count))
+            print('Added %s to s_%s %s times' % (time, emoji, count))
 

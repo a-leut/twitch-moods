@@ -14,7 +14,7 @@ public class BoidKappa {
   public BoidKappa(String url, int count, int totalCount) {
     // Init basic values
     PImage loaded = loadImage(url, "png");
-    img = ImageMask.maskOpaqueImage(loaded);
+    img = ImageMask.resizeAndAlphaMaskImage(loaded);
     this.count = count;
     this.url = url;
     // Give it directional info
@@ -34,6 +34,17 @@ public class BoidKappa {
 
   private void move(HashMap<String, BoidKappa> neighbors) {
     // TODO: Flocking
+        // Move back if past wall
+    if (pos.x > width) {
+      pos.x = width;
+    } else if (pos.x < 0) {
+      pos.x = 0;
+    }
+    if (pos.y > height) {
+      pos.y = height;
+    } else if (pos.y < 0) {
+      pos.y = 0;
+    }
     // Reverse direction vector if boid will pass wall
     PVector future = new PVector(pos.x, pos.y);
     future.add(dir);
@@ -43,6 +54,7 @@ public class BoidKappa {
     if (future.y - size/2 < 0 || future.y + size/2 > height) {
       dir.y *= -1.0;
     }
+
     // Add updated direction vector to position
     pos.add(dir);
   }

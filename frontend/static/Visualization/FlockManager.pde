@@ -1,5 +1,5 @@
 public class FlockManager {
-  public HashMap<String, BoidKappa> boids;
+  private HashMap<String, BoidKappa> boids;
   
   public FlockManager() {
     this.boids = new HashMap<String, BoidKappa>();
@@ -9,12 +9,20 @@ public class FlockManager {
     this.boids = boids;
   }
   
+  void removeDeadBoids(ArrayList<String> updated) {
+    ArrayList<String> toRemove = new ArrayList<String>();
+    for (String url : boids.keySet()) {
+      if (!updated.contains(url)) {
+        toRemove.add(url);
+      }
+    }
+  }
+  
   void updateBoid(String url, int count) {
     if (boids.containsKey(url)) {
       BoidKappa b = boids.get(url);
       b.count = count;
-    }
-    else {
+    } else {
       boids.put(url, new BoidKappa(url, count, getTotalCount())); 
     }
   }

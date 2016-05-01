@@ -1,9 +1,17 @@
 static class ImageMask {
-  public static PImage maskOpaqueImage(PImage img) {
+  public static PImage resizeAndAlphaMaskImage(PImage img) {
     color c = img.get(0, 0);
-    // If top left corner is not transparent
+    // Alpha mask image if top left corner is not transparent
     if ((c & 0xFF000000) >> 24 != 0.0) {
       img = maskImage(img, c);
+    }
+    // Resize to frame if bigger than 28x28
+    if (img.height > 28 || img.width > 28) {
+      if (img.height > img.width) {
+        img.resize(0, 28);
+      } else {
+        img.resize(28, 0);
+      }
     }
     return img;
   }

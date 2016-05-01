@@ -8,6 +8,7 @@ function update_view(data){
             $("#emojis").append("<li>" + index + ": " + value + "</li>");
         }
     });
+    pjs.boidsUpdated();
 }
 
 // Polls every second
@@ -20,5 +21,3 @@ function update_view(data){
       }, dataType: "json"});
   }, 10);
 })();
-
-
