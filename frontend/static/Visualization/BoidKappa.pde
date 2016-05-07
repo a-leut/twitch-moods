@@ -22,7 +22,7 @@ public class BoidKappa {
     // Give it directional info
     setSize(totalCount);
     pos = new PVector(random(size/2+1, width-size/2-1), random(size/2+1, height-size/2-1));
-    float randSpeed = random(1.0, 3.0);
+    float randSpeed = random(1.0, 2.0);
     dir = new PVector(random(-randSpeed, randSpeed), random(-randSpeed, randSpeed));
   }
 
@@ -36,9 +36,8 @@ public class BoidKappa {
 
   private void move(HashMap<String, BoidKappa> neighbors) {
     // TODO: Flocking
-    dir.x += random(-0.05, 0.05);
-    dir.y += random(-0.05, 0.05);
-
+    dir.x += random(-0.06, 0.06);
+    dir.y += random(-0.06, 0.06);
     pos.add(dir);
     borders();
   }
