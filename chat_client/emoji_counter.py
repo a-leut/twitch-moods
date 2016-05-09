@@ -27,7 +27,6 @@ class EmojiCounter(object):
         """
         self._messages.append(message)
         if len(self._messages) > EmojiCounter.BUFFER_LIMIT:
-            # print('%s - proc' % time.time())
             self.process_messages()
             self._messages = []
 
@@ -75,10 +74,9 @@ class EmojiCounter(object):
         if count == 1:
             self._redis.zadd('s_' + emoji, time, time)
         elif count > 1:
-            # TODO: refactor to single redis call
+            # TODO: Refactor to single redis call
             for n in range(count):
                 unique_time = time + (0.0000001 * n)
                 self._redis.zadd('s_' + emoji, unique_time, unique_time)
         if self._verbose:
             print('Added %s to s_%s %s times' % (time, emoji, count))
-
