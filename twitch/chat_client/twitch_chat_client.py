@@ -1,7 +1,10 @@
 import time
 import socket
+
 import redis
-from chat_client import TwitchIRC, EmojiCounter, make_logger
+
+from twitch.chat_client import TwitchIRC, EmojiCounter, make_logger
+
 
 class ChatClient(object):
     """ Reads twitch chat messages from given channel and updates counts of

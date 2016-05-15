@@ -1,6 +1,8 @@
 import time
 from collections import Counter
-from twitch_api_service import get_emoji_names_urls
+
+from twitch.api_service import get_emoji_names_urls
+
 
 class EmojiCounter(object):
     """ Counts emojis and stores the result in redis through the lifetime of

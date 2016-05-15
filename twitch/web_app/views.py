@@ -1,6 +1,7 @@
 import numpy as np
 from flask import current_app, Blueprint, jsonify
-from twitch_api_service import get_emoji_names_urls
+
+from twitch.api_service import get_emoji_names_urls
 
 api = Blueprint('api', __name__, url_prefix='/api/v1')
 names, urls = get_emoji_names_urls()

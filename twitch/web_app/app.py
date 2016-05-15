@@ -1,7 +1,9 @@
 import redis
 from flask import Flask
 from flask_cors import CORS
-from .views import api
+
+from twitch.web_app.views import api
+
 
 def create_app(app_name='web_app'):
     app = Flask(app_name)
