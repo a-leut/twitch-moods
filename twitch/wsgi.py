@@ -1,5 +1,5 @@
-from twitch.web_app import app
+from twitch.web_app import create_app
 
 if __name__ == '__main__':
-    inst = app.create_app()
-    inst.run(debug=False)
+    app = create_app.create_app()
+    app.run(debug=False)

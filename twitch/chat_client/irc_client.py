@@ -11,9 +11,6 @@ class TwitchIRC(object):
     """ Client for reading messages from twitch.tv chat. Connects to the chat
         server, joins some number of channels, and returns the next message
         from all the channels each time get_message is called.
-
-        TODO:
-        Refactor to asyncio ?
     """
     def __init__(self, channels=[]):
         self.channels = channels
