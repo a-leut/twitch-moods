@@ -1,4 +1,4 @@
-from twitch.create_wsgi import app
+from twitch.create_wsgi import app as application
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    application.run(debug=False)
