@@ -5,9 +5,9 @@ After=network.target
 [Service]
 User=alex
 Group=nginx
-WorkingDirectory=/home/user/alex/twitch_moods/twitch
-Environment="PATH=/home/user/alex/.venv/web/bin"
-ExecStart=/home/user/alex/.venv/web/bin/uwsgi --ini myproject.ini
+WorkingDirectory=~/twitch_moods/twitch
+Environment="PATH=~/.venv/web/bin"
+ExecStart=~/.venv/web/bin/uwsgi --ini myproject.ini
 
 [Install]
 WantedBy=multi-user.target
