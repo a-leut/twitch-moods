@@ -3,7 +3,7 @@ Description=uWSGI instance to serve myproject
 After=network.target
 
 [Service]
-User=alex
+User=[user]
 Group=nginx
 WorkingDirectory=~/twitch_moods/twitch
 Environment="PATH=~/.venv/web/bin"
